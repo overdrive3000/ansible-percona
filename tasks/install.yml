@@ -1,0 +1,26 @@
+---
+- name: Install percona database server
+  action: apt pkg={{ item }} state=latest
+  with_items:
+          - percona-server-server-5.5
+          - percona-server-client-5.5
+          - percona-toolkit
+          - percona-xtrabackup
+          - python-mysqldb
+
+- name: Copy .my.cnf file into the root home folder
+  template: src=root-my-cnf.j2 dest=/root/.my.cnf owner=root mode=0600
+
+- name: Update MySQL root password
+  mysql_user: name=root host={{ item }} password={{ root_password }} login_user=root login_password={{ root_password }} check_implicit_admin=yes
+  with_items:
+          - 127.0.0.1
+          - localhost
+
+- name: Ensure anonymous users are not in the database
+  mysql_user: name='' host={{ item }} state=absent
+  with_items:
+          - localhost
+
+- name: remove test database
+  mysql_db: name=test state=absent
