@@ -14,13 +14,33 @@
 - name: Update MySQL root password
   mysql_user: name=root host={{ item }} password={{ root_password }} login_user=root login_password={{ root_password }} check_implicit_admin=yes
   with_items:
+          - "{{ ansible_hostname }}"
           - 127.0.0.1
           - localhost
 
 - name: Ensure anonymous users are not in the database
   mysql_user: name='' host={{ item }} state=absent
   with_items:
+          - "{{ ansible_hostname }}"
           - localhost
 
 - name: remove test database
   mysql_db: name=test state=absent
+
+- name: Delete fnv1a_64 if exists
+  command: /usr/bin/mysql -e "DROP FUNCTION IF EXISTS fnv1a_64"
+
+- name: Create fnv1a_64
+  command: /usr/bin/mysql -e "CREATE FUNCTION fnv1a_64 RETURNS INTEGER SONAME 'libfnv1a_udf.so'" creates=/tmp/libfnv1a_udf.so.done
+
+- name: Delete fnv_64 if exists
+  command: /usr/bin/mysql -e "DROP FUNCTION IF EXISTS fnv_64"
+
+- name: Create fnv_64
+  command: /usr/bin/mysql -e "CREATE FUNCTION fnv_64 RETURNS INTEGER SONAME 'libfnv_udf.so'" creates=/tmp/libfnv_udf.so.done
+
+- name: Delete murmur_hash if exists
+  command: /usr/bin/mysql -e "DROP FUNCTION IF EXISTS murmur_hash"
+
+- name: Create murmur_hash
+  command: /usr/bin/mysql -e "CREATE FUNCTION murmur_hash RETURNS INTEGER SONAME 'libmurmur_udf.so'" creates=/tmp/libmurmur_udf.so.done
