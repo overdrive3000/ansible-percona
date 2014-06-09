@@ -1,0 +1,23 @@
+---
+- name: Create application database
+  mysql_db: name={{ db_name }} state=present collation={{ db_collation }}
+  tags:
+          - createdatabase
+
+- name: Copy SQL dump file to the server
+  copy: name={{ db_dump_file }} dest=/tmp
+  when: db_dump_file != ""
+  tags:
+          - copydumpfile
+          - dumpfile
+
+- name: Dump file into the database
+  mysql_db: name={{ db_name }} state=import target=/tmp/{{ db_dump_file }}
+  when: db_dump_file != ""
+  tags:
+          - dumpfile
+
+- name: Create Application user database
+  mysql_user: name={{  db_user }} password={{ db_user_password }} priv={{ db_name }}.*:ALL host={{ db_host }} state=present
+  tags:
+          - createuserdatabase

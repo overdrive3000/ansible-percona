@@ -14,3 +14,12 @@ sqldebug: true
 log_slow_queries: log_slow_queries    = /var/log/mysql/mysql-slow.log
 long_query_time: long_query_time      = 2
 log_queries_not_using_indexes: log-queries-not-using-indexes
+
+# Define is a database must be created
+create_app_db: true
+db_name: mydatabase
+db_collation: utf8_general_ci
+db_user: myuser
+db_user_password: anotherreallylongpassword
+db_host: %
+db_dump_file: dump.sql.bz2
