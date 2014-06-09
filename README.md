@@ -12,7 +12,7 @@ Available variables are listed below with its default values.
 
 	root_password: reallylongpassword
 
-Define the MySQL root password, this password will be used to create a /root/.my.cnf to allow root mysql connections without password
+Define the MySQL root password, this password will be used to create a **/root/.my.cnf** to allow root mysql connections without password
 
 	port: 3306
 	bind_address: 0.0.0.0
@@ -31,7 +31,7 @@ Define some values to tuning the database server
 	long_query_time: long_query_time      = 2
 	log_queries_not_using_indexes: log-queries-not-using-indexes
 
-If sqldebug is true this playbook will configure Percona MySQL with slow queries debug logs, if you want to disable this debug information you have to set sqldebug: false
+If **sqldebug** is true this playbook will configure Percona MySQL with slow queries debug logs, if you want to disable this debug information you have to set **sqldebug: false**
 
 	create_app_db: true
 	db_name: mydatabase
@@ -41,7 +41,7 @@ If sqldebug is true this playbook will configure Percona MySQL with slow queries
 	db_host: "%"
 	db_dump_file: ""
 
-If create_app_db is true this playbook will configura an application database, you can set a path for a SQL dump file if you want to restore data in the new application database
+If **create_app_db** is true this playbook will configura an application database, you can set a path for a SQL dump file if you want to restore data in the new application database
 
 ## Dependencies
 
