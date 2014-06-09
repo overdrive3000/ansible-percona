@@ -21,5 +21,5 @@ db_name: mydatabase
 db_collation: utf8_general_ci
 db_user: myuser
 db_user_password: anotherreallylongpassword
-db_host: %
-db_dump_file: dump.sql.bz2
+db_host: "%"
+db_dump_file: ""
