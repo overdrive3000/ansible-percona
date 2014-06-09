@@ -1,0 +1,18 @@
+---
+galaxy_info:
+        author: "Juan Mesa"
+        company: gochos
+        license: BSD
+        min_ansible_version: 1.4
+        platforms:
+                - name: Ubuntu
+                  versions:
+                          - saucy
+                          - precise
+                - name: Debian
+                  versions:
+                          - wheezy
+                          - squeeze
+        categories:
+                - database
+dependecies: []
