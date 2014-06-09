@@ -7,7 +7,7 @@ beta version...
 
 TODO:
 
-Create application user
-Create application database
-Create application database from dump file
-Documentation
+* Create application user
+* Create application database
+* Create application database from dump file
+* Documentation
