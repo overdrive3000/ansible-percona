@@ -3,7 +3,7 @@
   user: vagrant
   sudo: true
   vars:
-          - db_name: test
+          - db_name: mydb
           - db_user: test
           - db_host: localhost
           - db_user_password: password
