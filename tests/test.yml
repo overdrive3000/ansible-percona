@@ -5,7 +5,7 @@
   vars:
           - db_name: test
           - db_user: test
-          - db_host: 192.168.111.14
+          - db_host: localhost
           - db_user_password: password
           - sqldebug: false
   roles:
