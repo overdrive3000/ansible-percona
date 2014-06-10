@@ -4,6 +4,12 @@ python: "2.7"
 
 before_install:
         - sudo apt-get update -qq
+        # Remove MySQL
+        - sudo apt-get remove --purge -s 'mysql*'
+        - sudo apt-get autoremove
+        - sudo apt-get autoclean
+        - sudo rm -rf /var/lib/mysql
+        - sudo truncate -s 0 /var/log/mysql/error.log
 
 install:
         - pip install ansible
@@ -21,3 +27,9 @@ script:
                 | grep -q 'change=0.*failed=0' 
                 && (echo 'Idempontence test: pass' && exit 0) 
                 || (echo 'Idempotence test: fail' && exit 1)
+        # Test MySQL connection
+        - >
+                mysql -u root -preallylongpassword -e 'shoe databases;'
+                | grep -q 'performance_schema'
+                && (echo 'MySQL running normally' && exit 0)
+                || (echo 'MySQL not running' && exit 1)
