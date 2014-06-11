@@ -25,12 +25,12 @@ script:
         # Test role idempotence
         - >
                 ansible-playbook -i tests/inventory tests/test.yml --connection=local 
-                | grep -q 'change=0.*failed=0' 
-                && (echo 'Idempontence test: pass' && exit 0) 
+                | grep -q 'changed=0.*failed=0' 
+                && (echo 'Idempotence test: pass' && exit 0) 
                 || (echo 'Idempotence test: fail' && exit 1)
         # Test MySQL connection
         - >
-                mysql -u root -preallylongpassword -e 'shoe databases;'
+                mysql -u root -preallylongpassword -e 'show databases;'
                 | grep -q 'performance_schema'
                 && (echo 'MySQL running normally' && exit 0)
                 || (echo 'MySQL not running' && exit 1)
