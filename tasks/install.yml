@@ -1,4 +1,9 @@
 ---
+- name: Ensure MySQL server is uninstalled
+  action: apt pkg={{ item }} state=absent
+  with_items:
+          - mysql-server-core-5.5
+
 - name: Install percona database server
   action: apt pkg={{ item }} state=latest
   with_items:
