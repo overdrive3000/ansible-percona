@@ -1,12 +1,13 @@
 ---
 galaxy_info:
-        author: "Juan Mesa"
-        company: gochos
-        license: BSD
+        author: "Laurie Voss"
+        company: "npm Inc"
+        license: ISC
         min_ansible_version: 1.4
         platforms:
                 - name: Ubuntu
                   versions:
+                          - trusty
                           - saucy
                           - precise
                 - name: Debian

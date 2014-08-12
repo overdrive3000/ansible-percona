@@ -35,16 +35,7 @@
 - name: remove test database
   mysql_db: name=test state=absent
 
-- name: Create fnv1a_64
-  shell: /usr/bin/mysql -e "CREATE FUNCTION fnv1a_64 RETURNS INTEGER SONAME 'libfnv1a_udf.so'" && touch /var/log/libfnv1a_udf.so.done creates=/var/log/libfnv1a_udf.so.done
-
-- name: Create fnv_64
-  shell: /usr/bin/mysql -e "CREATE FUNCTION fnv_64 RETURNS INTEGER SONAME 'libfnv_udf.so'" && touch /var/log/libfnv_udf.so.done creates=/var/log/libfnv_udf.so.done
-
-- name: Create murmur_hash
-  shell: /usr/bin/mysql -e "CREATE FUNCTION murmur_hash RETURNS INTEGER SONAME 'libmurmur_udf.so'" && touch /var/log/libmurmur_udf.so.done creates=/var/log/libmurmur_udf.so.done
-
 - name: Write custom server configuration
-  template: src=my.cnf.j2 dest=/etc/mysql/my.cnf owner=root mode=0622
+  template: src=etc_mysql_my.cnf.j2 dest=/etc/mysql/my.cnf owner=root mode=0622
   notify:
           - restart percona

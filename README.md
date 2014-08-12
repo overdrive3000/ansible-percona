@@ -1,8 +1,6 @@
 # Ansible Role: Percona
 
-Ansible playbook to install percona MySQL server in Debian/Ubuntu servers
-
-[![Build Status](https://api.travis-ci.org/overdrive3000/ansible-percona.svg)](https://travis-ci.org/overdrive3000/ansible-percona/)
+Ansible playbook to install Percona MySQL server on Debian/Ubuntu servers
 
 ## Requirements
 

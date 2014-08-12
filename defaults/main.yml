@@ -1,22 +1,39 @@
----
-# Define root password for percona server
-root_password: reallylongpassword
+# file: mysql/defaults/main.yml
 
-# Some defaults variables for percona server config file
-port: 3306
-bind_address: 0.0.0.0
-max_allowed_packet: 16M
-key_buffer: 16M
-thread_stack: 192K
-thread_cache_size: 8
-# Uncomment following vars if you want to log queries
-sqldebug: true
-log_slow_queries: log_slow_queries    = /var/log/mysql/mysql-slow.log
-long_query_time: long_query_time      = 2
-log_queries_not_using_indexes: log-queries-not-using-indexes
+# Basic settings
+mysql_port: 3306
+mysql_bind_address: "0.0.0.0"
+mysql_root_password: 'pass'
+mysql_language: '/usr/share/mysql/'
 
-# Define is a database must be created
-create_app_db: true
+# Fine Tuning
+mysql_key_buffer: '16M'
+mysql_max_allowed_packet: '128M'
+mysql_thread_stack: '192K'
+mysql_cache_size: 8
+mysql_myisam_recover: 'BACKUP'
+mysql_max_connections: 100
+mysql_table_cache: 64
+mysql_thread_concurrency: 10
+mysql_query_cache_limit: '1M'
+mysql_query_cache_size: '16M'
+mysql_innodb_file_per_table: 'innodb_file_per_table'
+mysql_character_set_server: 'utf8'
+mysql_collation_server: 'utf8_general_ci'
+mysql_mysqldump_max_allowed_packet: '128M'
+mysql_isamchk_key_buffer: '16M'
+
+# InnoDB tuning
+mysql_innodb_file_per_table: 'innodb_file_per_table'
+mysql_innodb_flush_method: 'fdatasync'
+mysql_innodb_buffer_pool_size: '128M'
+mysql_innodb_flush_log_at_trx_commit: 1
+mysql_innodb_lock_wait_timeout: 50
+mysql_innodb_log_buffer_size: '1M'
+mysql_innodb_log_file_size: '5M'
+
+# Create from a DB dump?
+create_app_db: false
 db_name: mydatabase
 db_collation: utf8_general_ci
 db_user: myuser
