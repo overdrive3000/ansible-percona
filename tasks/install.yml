@@ -16,14 +16,51 @@
           - percona-xtrabackup
           - python-mysqldb
 
+- name: Ensure datadir exists
+  sudo: true
+  file: >
+    path={{ mysql_datadir }}
+    state=directory
+    owner=mysql
+    group=mysql
+
+- name: Ensure default datadir is not still there
+  sudo: true
+  file: >
+    path=/var/lib/mysql
+    state=absent
+
+- name: Ensure symlink from /var/lib/mysql to datadir
+  sudo: true
+  file: >
+    path=/var/lib/mysql
+    src={{ mysql_datadir }}
+    state=link
+    force=yes
+    owner=mysql
+    group=mysql
+  notify:
+          - restart percona
+
 - name: Copy .my.cnf file into the root home folder
   template: src=root-my-cnf.j2 dest=/root/.my.cnf owner=root mode=0600
 
+- name: Initialize the datadir if it's not already populated
+  sudo: true
+  command: mysql_install_db --datadir={{ mysql_datadir }}
+
 - name: Update MySQL root password
-  mysql_user: name=root host={{ item }} password={{ root_password }} login_user=root login_password={{ root_password }} check_implicit_admin=yes
+  ignore_errors: true
+  mysql_user: name=root host={{ item }} password={{ root_password }} login_user=root login_password= check_implicit_admin=yes
   with_items:
           - "{{ ansible_hostname }}"
           - 127.0.0.1
+          - localhost
+
+- name: Ensure anonymous users are not in the database
+  mysql_user: name='' host={{ item }} state=absent
+  with_items:
+          - "{{ ansible_hostname }}"
           - localhost
 
 - name: Ensure anonymous users are not in the database
@@ -36,6 +73,6 @@
   mysql_db: name=test state=absent
 
 - name: Write custom server configuration
-  template: src=etc_mysql_my.cnf.j2 dest=/etc/mysql/my.cnf owner=root mode=0622
+  template: src=etc_mysql_my.cnf.j2 dest=/etc/mysql/my.cnf owner=root mode=0600
   notify:
           - restart percona
