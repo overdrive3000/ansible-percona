@@ -16,6 +16,10 @@
           - percona-xtrabackup
           - python-mysqldb
 
+- name: Stop percona
+  sudo: true
+  command: service mysql stop
+
 - name: Ensure datadir exists
   sudo: true
   file: >
@@ -42,26 +46,55 @@
   notify:
           - restart percona
 
-- name: Copy .my.cnf file into the root home folder
-  template: src=root-my-cnf.j2 dest=/root/.my.cnf owner=root mode=0600
-
 - name: Initialize the datadir if it's not already populated
   sudo: true
-  command: mysql_install_db --datadir={{ mysql_datadir }}
+  command: mysql_install_db --datadir={{ mysql_datadir }} --user=mysql
 
-- name: Update MySQL root password
-  ignore_errors: true
-  mysql_user: name=root host={{ item }} password={{ root_password }} login_user=root login_password= check_implicit_admin=yes
-  with_items:
-          - "{{ ansible_hostname }}"
-          - 127.0.0.1
-          - localhost
+- name: Force datadir to be owned by mysql because mysql_install_db is shit
+  sudo: true
+  command: chown -R mysql:mysql {{ mysql_datadir }}
 
-- name: Ensure anonymous users are not in the database
-  mysql_user: name='' host={{ item }} state=absent
+- name: Write custom server configuration
+  template: src=etc_mysql_my.cnf.j2 dest=/etc/mysql/my.cnf owner=root mode=0600
+
+- name: Restart percona
+  sudo: true
+  command: service mysql start
+
+#- name: Update MySQL root password
+#  ignore_errors: true
+#  command: 'mysqladmin -u root password {{ mysql_root_password }}'
+
+#- name: Update MySQL root password
+#  ignore_errors: true
+#  mysql_user: >
+#    name=root
+#    password={{ mysql_root_password }}
+#    host={{ item }}
+#  with_items:
+#          - "{{ ansible_hostname }}"
+#          - 127.0.0.1
+#          - localhost
+
+- name: update mysql root password for all root accounts
+  mysql_user: name=root host={{ item }} password={{ mysql_root_password }}
   with_items:
-          - "{{ ansible_hostname }}"
-          - localhost
+   - "{{ ansible_hostname }}"
+   - 127.0.0.1
+   - ::1
+   - localhost
+  when: ansible_hostname != 'localhost'
+
+- name: update mysql root password for all root accounts
+  mysql_user: name=root host={{ item }} password={{ mysql_root_password }}
+  with_items:
+   - 127.0.0.1
+   - ::1
+   - localhost
+  when: ansible_hostname == 'localhost'
+
+- name: Copy .my.cnf file into the root home folder
+  template: src=root-my-cnf.j2 dest=~/.my.cnf owner=root mode=0600
 
 - name: Ensure anonymous users are not in the database
   mysql_user: name='' host={{ item }} state=absent
@@ -72,7 +105,3 @@
 - name: remove test database
   mysql_db: name=test state=absent
 
-- name: Write custom server configuration
-  template: src=etc_mysql_my.cnf.j2 dest=/etc/mysql/my.cnf owner=root mode=0600
-  notify:
-          - restart percona
