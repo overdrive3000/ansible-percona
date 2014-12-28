@@ -45,6 +45,6 @@
   shell: /usr/bin/mysql -e "CREATE FUNCTION murmur_hash RETURNS INTEGER SONAME 'libmurmur_udf.so'" && touch /var/log/libmurmur_udf.so.done creates=/var/log/libmurmur_udf.so.done
 
 - name: Write custom server configuration
-  template: src=my.cnf.j2 dest=/etc/mysql/my.cnf owner=root mode=0622
+  template: src=my.cnf.j2 dest=/etc/mysql/my.cnf owner=root mode=0644
   notify:
           - restart percona
