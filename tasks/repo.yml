@@ -1,7 +1,7 @@
 ---
 # file: tasks/repo.tml
 
-- name: Obtianing percona public key
+- name: Obtaining percona public key
   apt_key: url=http://www.percona.com/downloads/RPM-GPG-KEY-percona
           state=present
 
