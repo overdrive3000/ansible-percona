@@ -23,3 +23,4 @@ db_user: myuser
 db_user_password: anotherreallylongpassword
 db_host: "%"
 db_dump_file: ""
+apt_cache_server: ""
