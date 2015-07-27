@@ -45,6 +45,10 @@ If **sqldebug** is true this playbook will configure Percona MySQL with slow que
 
 If **create_app_db** is true this playbook will configura an application database, you can set a path for a SQL dump file if you want to restore data in the new application database
 
+*apt_cache_server* can be set to an apt-cacher service to change the apt-repository
+
+    apt_cache_server: "192.168.1.254:3142/"
+
 ## Dependencies
 
 None.

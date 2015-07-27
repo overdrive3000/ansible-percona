@@ -6,11 +6,11 @@
           state=present
 
 - name: Adding percona repository
-  apt_repository: repo='deb http://repo.percona.com/apt {{ ansible_distribution_release }} main'
+  apt_repository: repo='deb http://{{apt_cache_server}}repo.percona.com/apt {{ ansible_distribution_release }} main'
           state=present
 
 - name: Adding percona source repository
-  apt_repository: repo='deb-src http://repo.percona.com/apt {{ ansible_distribution_release }} main'
+  apt_repository: repo='deb-src http://{{apt_cache_server}}repo.percona.com/apt {{ ansible_distribution_release }} main'
           state=present
 
 - name: Update apt cache
